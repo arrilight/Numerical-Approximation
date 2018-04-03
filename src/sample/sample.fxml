@@ -8,9 +8,9 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1000.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="900.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
     <children>
-        <LineChart fx:id="Graph" layoutX="363.0" layoutY="27.0" prefHeight="442.0" prefWidth="637.0" title="Graph of function" AnchorPane.bottomAnchor="531.0" AnchorPane.leftAnchor="363.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="27.0">
+        <LineChart fx:id="Graph" layoutX="363.0" layoutY="27.0" prefHeight="441.0" prefWidth="537.0" title="Functions" AnchorPane.bottomAnchor="432.0" AnchorPane.leftAnchor="363.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="27.0">
             <xAxis>
                 <NumberAxis label="x" side="BOTTOM" />
             </xAxis>
@@ -23,18 +23,17 @@
             <Font size="18.0" />
          </font></Text>
       <TextField fx:id="initial_x" layoutX="100.0" layoutY="160.0" prefHeight="21.0" prefWidth="156.0" text="1" />
-      <TextField fx:id="initial_X" layoutX="100.0" layoutY="258.0" prefHeight="27.0" prefWidth="156.0" text="10.2" />
-      <TextField fx:id="initial_y" layoutX="100.0" layoutY="208.0" prefHeight="27.0" prefWidth="156.0" text="1" />
-      <Button layoutX="145.0" layoutY="401.0" mnemonicParsing="false" onAction="#handleApplyAction" text="Apply" />
+      <TextField fx:id="initial_X" layoutX="100.0" layoutY="258.0" prefHeight="21.0" prefWidth="156.0" text="10.2" />
+      <TextField fx:id="initial_y" layoutX="100.0" layoutY="208.0" prefHeight="21.0" prefWidth="156.0" text="1" />
+      <Button layoutX="147.0" layoutY="857.0" mnemonicParsing="false" onAction="#handleApplyAction" text="Apply" />
       <Separator layoutX="3.0" layoutY="459.0" prefHeight="24.0" prefWidth="999.0" />
-      <Button layoutX="177.0" layoutY="826.0" mnemonicParsing="false" text="Apply" />
-      <TextField fx:id="initial_N" layoutX="95.0" layoutY="313.0" prefHeight="21.0" prefWidth="156.0" text="100" />
+      <TextField fx:id="initial_N" layoutX="100.0" layoutY="313.0" prefHeight="21.0" prefWidth="156.0" text="100" />
       <Text layoutX="92.0" layoutY="603.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Numerical parameters" wrappingWidth="199.457763671875">
          <font>
             <Font size="18.0" />
          </font>
       </Text>
-      <LineChart fx:id="MyChart1" layoutX="368.0" layoutY="475.0" prefHeight="520.0" prefWidth="637.0" title="Trigonamethrical functions">
+      <LineChart fx:id="ErrorGraph" layoutX="363.0" layoutY="480.0" prefHeight="415.0" prefWidth="537.0" title="Error Graph">
          <xAxis>
             <NumberAxis label="x" side="BOTTOM" />
          </xAxis>
@@ -42,12 +41,12 @@
             <NumberAxis label="y" side="LEFT" />
          </yAxis>
       </LineChart>
-      <CheckBox layoutX="121.0" layoutY="626.0" mnemonicParsing="false" prefHeight="19.0" prefWidth="88.0" text="Exact" />
-      <CheckBox layoutX="121.0" layoutY="668.0" mnemonicParsing="false" prefHeight="19.0" prefWidth="88.0" text="Euler" />
-      <CheckBox layoutX="121.0" layoutY="714.0" mnemonicParsing="false" prefHeight="19.0" prefWidth="150.0" text="Improved Euler" />
-      <CheckBox layoutX="119.0" layoutY="758.0" mnemonicParsing="false" prefHeight="19.0" prefWidth="138.0" text="Runge-Kutta" />
-      <Text layoutX="69.0" layoutY="178.0" strokeType="OUTSIDE" strokeWidth="0.0" text="x0" />
-      <Text layoutX="69.0" layoutY="226.0" strokeType="OUTSIDE" strokeWidth="0.0" text="y0" />
+      <CheckBox fx:id="isExact" layoutX="92.0" layoutY="627.0" mnemonicParsing="false" prefHeight="19.0" prefWidth="88.0" selected="true" text="Exact" />
+      <CheckBox fx:id="isEuler" layoutX="92.0" layoutY="668.0" mnemonicParsing="false" prefHeight="19.0" prefWidth="88.0" selected="true" text="Euler" />
+      <CheckBox fx:id="isImprovedEuler" layoutX="92.0" layoutY="710.0" mnemonicParsing="false" prefHeight="19.0" prefWidth="150.0" selected="true" text="Improved Euler" />
+      <CheckBox fx:id="isRK" layoutX="92.0" layoutY="752.0" mnemonicParsing="false" prefHeight="19.0" prefWidth="138.0" selected="true" text="Runge-Kutta" />
+      <Text layoutX="72.0" layoutY="178.0" strokeType="OUTSIDE" strokeWidth="0.0" text="x0" />
+      <Text layoutX="72.0" layoutY="226.0" strokeType="OUTSIDE" strokeWidth="0.0" text="y0" />
       <Text layoutX="72.0" layoutY="276.0" strokeType="OUTSIDE" strokeWidth="0.0" text="X" />
       <Text layoutX="72.0" layoutY="330.0" strokeType="OUTSIDE" strokeWidth="0.0" text="N" />
     </children>
