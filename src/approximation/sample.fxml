@@ -8,7 +8,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="900.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="900.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="approximation.Controller">
     <children>
         <LineChart fx:id="Graph" layoutX="363.0" layoutY="27.0" prefHeight="441.0" prefWidth="537.0" title="Functions" AnchorPane.bottomAnchor="432.0" AnchorPane.leftAnchor="363.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="27.0">
             <xAxis>

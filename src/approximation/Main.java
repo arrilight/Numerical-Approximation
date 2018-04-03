@@ -1,4 +1,4 @@
-package sample;
+package approximation;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -11,7 +11,7 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception{
         Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
-        primaryStage.setTitle("Hello World");
+        primaryStage.setTitle("Numerical approximation for differential equations");
         primaryStage.setScene(new Scene(root, 900, 900));
         primaryStage.show();
     }

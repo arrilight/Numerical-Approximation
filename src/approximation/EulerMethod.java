@@ -1,9 +1,9 @@
-package sample;
+package approximation;
 
 import java.util.ArrayList;
 
-public class EulerMethod {
-    public static ArrayList<Double> calculateValues(double x0, double X, double y0, double h) {
+class EulerMethod {
+    static ArrayList<Double> calculateValues(double x0, double X, double y0, double h) {
         ArrayList<Double> result = new ArrayList<>();
         result.add(y0);
         double x = x0 + h;

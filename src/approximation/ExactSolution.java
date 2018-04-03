@@ -1,4 +1,4 @@
-package sample;
+package approximation;
 
 import java.util.ArrayList;
 

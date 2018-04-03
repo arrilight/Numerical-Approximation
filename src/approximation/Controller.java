@@ -1,4 +1,4 @@
-package sample;
+package approximation;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -59,6 +59,13 @@ public class Controller {
             error.setName("Euler");
             ErrorGraph.getData().addAll(error);
         }
+        if (isImprovedEuler.isSelected()) {
+            ArrayList<Double> yImproved = ImprovedEuler.calculateValues(x0, X, y0, h);
+            Graph.getData().addAll(eulerSeries(xAxis, yImproved));
+            Series error = calculateError(yExact, yImproved, xAxis);
+            error.setName("Improved Euler");
+            ErrorGraph.getData().addAll(error);
+        }
 
     }
 
@@ -80,6 +87,16 @@ public class Controller {
             System.out.println(xAxis.get(i)+ " " +yAxis.get(i));
         }
         return eulerSolution;
+    }
+
+    private Series improvedEulerSeries(ArrayList<Double> xAxis, ArrayList<Double> yAxis) {
+        Series improvedEuler = new Series();
+        improvedEuler.setName("Improved Euler");
+        for (int i = 0; i < xAxis.size(); i++) {
+            improvedEuler.getData().add(new Data(xAxis.get(i), yAxis.get(i)));
+            System.out.println(xAxis.get(i)+ " " +yAxis.get(i));
+        }
+        return improvedEuler;
     }
 
     private Series calculateError(ArrayList<Double> yExact, ArrayList<Double> yApprox, ArrayList<Double> xAxis) {
