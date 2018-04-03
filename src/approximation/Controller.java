@@ -43,7 +43,8 @@ public class Controller {
         double h = (X - x0)/N;
         ArrayList<Double> xAxis = new ArrayList<>();
         double constant = ExactSolution.calculateConstant(x0, y0);
-        ArrayList<Double> yExact = ExactSolution.calculateValues(x0, X, h, 1);
+        System.out.println(constant);
+        ArrayList<Double> yExact = ExactSolution.calculateValues(x0, X, h, constant);
         for (double x = x0; x <= X; x+=h) {
             xAxis.add(x);
         }
@@ -66,7 +67,14 @@ public class Controller {
             error.setName("Improved Euler");
             ErrorGraph.getData().addAll(error);
         }
+        if (isRK.isSelected()) {
+            ArrayList<Double> yRK = RungeKutta.calculateValues(x0, X, y0, h);
+            Graph.getData().addAll(RungeKuttaSeries(xAxis, yRK));
+            Series error = calculateError(yExact, yRK, xAxis);
+            error.setName("Runge Kutta");
+            ErrorGraph.getData().addAll(error);
 
+        }
     }
 
     private Series exactSeries(ArrayList<Double> xAxis, ArrayList<Double> yAxis) {
@@ -74,7 +82,6 @@ public class Controller {
         exactSolution.setName("Exact");
         for (int i = 0; i < xAxis.size(); i++) {
             exactSolution.getData().add(new Data(xAxis.get(i), yAxis.get(i)));
-            System.out.println(xAxis.get(i)+ " " +yAxis.get(i));
         }
         return exactSolution;
     }
@@ -84,7 +91,6 @@ public class Controller {
         eulerSolution.setName("Euler");
         for (int i = 0; i < xAxis.size(); i++) {
             eulerSolution.getData().add(new Data(xAxis.get(i), yAxis.get(i)));
-            System.out.println(xAxis.get(i)+ " " +yAxis.get(i));
         }
         return eulerSolution;
     }
@@ -94,9 +100,17 @@ public class Controller {
         improvedEuler.setName("Improved Euler");
         for (int i = 0; i < xAxis.size(); i++) {
             improvedEuler.getData().add(new Data(xAxis.get(i), yAxis.get(i)));
-            System.out.println(xAxis.get(i)+ " " +yAxis.get(i));
         }
         return improvedEuler;
+    }
+
+    private Series RungeKuttaSeries(ArrayList<Double> xAxis, ArrayList<Double> yAxis) {
+        Series rungeKutta = new Series();
+        rungeKutta.setName("Runge Kutta");
+        for (int i = 0; i < xAxis.size(); i++) {
+            rungeKutta.getData().add(new Data(xAxis.get(i), yAxis.get(i)));
+        }
+        return rungeKutta;
     }
 
     private Series calculateError(ArrayList<Double> yExact, ArrayList<Double> yApprox, ArrayList<Double> xAxis) {

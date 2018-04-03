@@ -5,7 +5,7 @@ import java.util.ArrayList;
 public class ExactSolution {
 
     public static double calculateConstant(double x0, double y0) {
-        return (Math.log((Math.abs(y0 - 2*x0))/(Math.pow(x0, 3) * (y0 + x0))))/3;
+        return ((2 * x0 - y0)/(Math.pow(x0, 3) * (x0 + y0)));
 
     }
 
