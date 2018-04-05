@@ -20,6 +20,6 @@ public class ExactSolution {
     }
 
     private static double calculateValue(double c, double x) {
-        return -(x * Math.exp(3 * c) * Math.pow(x, 3) + 2)/(Math.exp(3 * c) * Math.pow(x, 3) - 1);
+        return x * (-c * Math.pow(x, 3) + 2)/(c * Math.pow(x, 3) + 1);
     }
 }
