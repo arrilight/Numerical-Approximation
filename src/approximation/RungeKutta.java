@@ -1,8 +1,10 @@
 package approximation;
 
 import java.util.ArrayList;
-
-public class RungeKutta extends Equation{
+/*
+ * Runge-Kutta approximation method.
+ */
+class RungeKutta extends Equation{
     static ArrayList<Double> calculateValues(double x0, double X, double y0, double h) {
         ArrayList<Double> result = new ArrayList<>();
         result.add(y0);

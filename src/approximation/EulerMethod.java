@@ -2,6 +2,9 @@ package approximation;
 
 import java.util.ArrayList;
 
+/*
+ * Euler approximation method.
+ */
 class EulerMethod extends Equation {
     static ArrayList<Double> calculateValues(double x0, double X, double y0, double h) {
         ArrayList<Double> result = new ArrayList<>();

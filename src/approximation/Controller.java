@@ -10,57 +10,79 @@ import javafx.scene.control.TextField;
 
 import java.util.ArrayList;
 
+/**
+ * This class represents the "Controller" in the MVC architectural pattern.
+ */
+
 public class Controller {
     @FXML
+    // Function graph
     private LineChart<Number, Number> Graph;
     @FXML
+    // Graph of relative error
     private LineChart<Number, Number> ErrorGraph;
     @FXML
+    // Graph of truncation error
     private LineChart<Integer, Double> TruncationGraph;
     @FXML
+    // Initial value of x
     private TextField initial_x;
     @FXML
+    // Initial value of y
     private TextField initial_y;
     @FXML
+    // Value of X (the end of the interval)
     private TextField initial_X;
     @FXML
+    // Value of N (number of steps)
     private TextField initial_N;
     @FXML
+    // Value of initial number of steps for Truncation Error graph
     private TextField error_n;
     @FXML
+    // Value of N for truncation error graph (the end of the interval)
     private TextField error_N;
     @FXML
+    // CheckBox to print the exact solution
     private CheckBox isExact;
     @FXML
+    // CheckBox to print the Euler solution and Error graph
     private CheckBox isEuler;
     @FXML
+    // CheckBox to print the Improved Euler solution and Error graph
     private CheckBox isImprovedEuler;
     @FXML
+    // CheckBox to print the Runge-Kutta solution and Error graph
     private CheckBox isRK;
     @FXML
+    // Checkbox to print Euler truncation error
     private CheckBox eulerError;
     @FXML
+    // Checkbox to print Improved Euler truncation error
     private CheckBox improvedError;
     @FXML
+    // Checkbox to print Runge-Kutta truncation error
     private CheckBox rungeError;
 
-
-
-
-
     @FXML
+    /*
+     * This function handles the "Apply" button for the Solution tab
+     */
     private void handleApplyAction(ActionEvent event) {
+        // Parsing values of the text boxes
         double x0 = Double.parseDouble(initial_x.getText());
         double X = Double.parseDouble(initial_X.getText());
         double y0 = Double.parseDouble(initial_y.getText());
         double N = Double.parseDouble(initial_N.getText());
-        double h = (X - x0)/N;
+        double h = (X - x0)/N; // calculate h
         ArrayList<Double> xAxis = new ArrayList<>();
         double constant = ExactSolution.calculateConstant(x0, y0);
         ArrayList<Double> yExact = ExactSolution.calculateValues(x0, X, h, constant);
+        // create the x axis for the solution graphs
         for (double x = x0; x <= X; x+=h) {
             xAxis.add(x);
         }
+        // clear the previous graphs
         Graph.getData().clear();
         ErrorGraph.getData().clear();
         if (isExact.isSelected()) {
@@ -99,6 +121,9 @@ public class Controller {
     }
 
     @FXML
+    /*
+    This function handles the "Apply" button at the Truncation tab.
+     */
     private void handleErrorButton(ActionEvent event) {
         double x0 = Double.parseDouble(initial_x.getText());
         double X = Double.parseDouble(initial_X.getText());
@@ -132,6 +157,9 @@ public class Controller {
         }
     }
 
+    /*
+    A simple function to create Series for the LineChart
+     */
     private Series makeSolutionSeries(ArrayList<Double> xAxis, ArrayList<Double> yAxis) {
         Series rungeKutta = new Series();
         for (int i = 0; i < xAxis.size(); i++) {
@@ -140,6 +168,9 @@ public class Controller {
         return rungeKutta;
     }
 
+    /*
+    A simple function to create Series for the LineChart (Truncation Error)
+    */
     private Series makeTruncationSeries(ArrayList<Integer> xAxis, ArrayList<Double> yAxis) {
         Series series = new Series();
         for (int i = 0; i < xAxis.size(); i++) {
@@ -148,7 +179,9 @@ public class Controller {
         return series;
     }
 
-
+    /*
+    A function to calculate errors with 2 given y-axis lists of values
+     */
     private Series calculateError(ArrayList<Double> yExact, ArrayList<Double> yApprox, ArrayList<Double> xAxis) {
         Series error = new Series();
         for (int i = 0; i < xAxis.size(); i++) {

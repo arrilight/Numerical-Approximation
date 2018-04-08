@@ -2,7 +2,10 @@ package approximation;
 
 import java.util.ArrayList;
 
-public class TruncationError {
+/*
+This class is used to calculate truncation error for the given method
+ */
+class TruncationError {
     static ArrayList<Double> calculateError(int n0, int N, double x0, double X, double y0, double c, String method) {
         ArrayList<Double> maxError = new ArrayList<>();
         for (int i = n0; i <= N; i++) {
