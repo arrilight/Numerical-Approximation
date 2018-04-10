@@ -1,21 +1,12 @@
 package approximation;
 
-import java.util.ArrayList;
-
 /*
  * Euler approximation method.
  */
 class EulerMethod extends ApproximationMethod {
-    ArrayList<Double> calculateValues(double x0, double X, double y0, double h) {
-        ArrayList<Double> result = new ArrayList<>();
-        result.add(y0);
-        double x = x0 + h;
-        while (x <= X) {
-            double lastY = result.get(result.size() - 1);
-            result.add(lastY + h * func(x - h, lastY));
-            x += h;
-        }
-        return result;
+    @Override
+    double calculateValue(double lastY, double x, double h) {
+        return lastY + h * func(x - h, lastY);
     }
 }
 
