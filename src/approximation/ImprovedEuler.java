@@ -5,8 +5,8 @@ import java.util.ArrayList;
 /*
  * Improved Euler approximation method.
  */
-class ImprovedEuler extends Equation {
-    static ArrayList<Double> calculateValues(double x0, double X, double y0, double h) {
+class ImprovedEuler extends ApproximationMethod {
+    ArrayList<Double> calculateValues(double x0, double X, double y0, double h) {
         ArrayList<Double> result = new ArrayList<>();
         result.add(y0);
         double x = x0 + h;
@@ -17,6 +17,6 @@ class ImprovedEuler extends Equation {
         }
         return result;
     }
-
-
 }
+
+

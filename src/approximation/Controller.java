@@ -16,107 +16,57 @@ import java.util.ArrayList;
 
 public class Controller {
     @FXML
-    // Function graph
-    private LineChart<Number, Number> Graph;
-    @FXML
-    // Graph of relative error
-    private LineChart<Number, Number> ErrorGraph;
+    // Functions graph
+    private LineChart<Number, Number> Graph, ErrorGraph;
     @FXML
     // Graph of truncation error
     private LineChart<Integer, Double> TruncationGraph;
     @FXML
-    // Initial value of x
-    private TextField initial_x;
+    // Initial values
+    private TextField initial_x, initial_y, initial_X, initial_N;
     @FXML
-    // Initial value of y
-    private TextField initial_y;
+    //Values for truncation errors
+    private TextField error_n, error_N;
     @FXML
-    // Value of X (the end of the interval)
-    private TextField initial_X;
+    // CheckBox to print approximate and exact solutions
+    private CheckBox isExact, isEuler, isImprovedEuler, isRK;
     @FXML
-    // Value of N (number of steps)
-    private TextField initial_N;
-    @FXML
-    // Value of initial number of steps for Truncation Error graph
-    private TextField error_n;
-    @FXML
-    // Value of N for truncation error graph (the end of the interval)
-    private TextField error_N;
-    @FXML
-    // CheckBox to print the exact solution
-    private CheckBox isExact;
-    @FXML
-    // CheckBox to print the Euler solution and Error graph
-    private CheckBox isEuler;
-    @FXML
-    // CheckBox to print the Improved Euler solution and Error graph
-    private CheckBox isImprovedEuler;
-    @FXML
-    // CheckBox to print the Runge-Kutta solution and Error graph
-    private CheckBox isRK;
-    @FXML
-    // Checkbox to print Euler truncation error
-    private CheckBox eulerError;
-    @FXML
-    // Checkbox to print Improved Euler truncation error
-    private CheckBox improvedError;
-    @FXML
-    // Checkbox to print Runge-Kutta truncation error
-    private CheckBox rungeError;
+    // Checkbox to print truncation errors
+    private CheckBox eulerError, improvedError, rungeError;
+    // Methods of approximation
+    private EulerMethod eulerMethod = new EulerMethod();
+    private ImprovedEuler improvedEuler = new ImprovedEuler();
+    private RungeKutta rungeKutta = new RungeKutta();
+    // Truncation error
+    private TruncationError truncationError = new TruncationError();
+    // Textbox values
+    private double x0, X, y0, N, h, constant;
+    private int n0, N_truncation;
 
     @FXML
     /*
      * This function handles the "Apply" button for the Solution tab
      */
     private void handleApplyAction(ActionEvent event) {
-        // Parsing values of the text boxes
-        double x0 = Double.parseDouble(initial_x.getText());
-        double X = Double.parseDouble(initial_X.getText());
-        double y0 = Double.parseDouble(initial_y.getText());
-        double N = Double.parseDouble(initial_N.getText());
-        double h = (X - x0)/N; // calculate h
-        ArrayList<Double> xAxis = new ArrayList<>();
-        double constant = ExactSolution.calculateConstant(x0, y0);
+        parseSolutionValues();
+        ArrayList<Object> xAxis = new ArrayList<>();
         ArrayList<Double> yExact = ExactSolution.calculateValues(x0, X, h, constant);
         // create the x axis for the solution graphs
         for (double x = x0; x <= X; x+=h) {
             xAxis.add(x);
         }
-        // clear the previous graphs
-        Graph.getData().clear();
-        ErrorGraph.getData().clear();
+        clearSolutionGraphs(); //clearing previous graphs
         if (isExact.isSelected()) {
-            Series exact = makeSolutionSeries(xAxis, yExact);
-            exact.setName("Exact solution");
-            Graph.getData().addAll(exact);
+            printExactGraph(xAxis, yExact);
         }
         if (isEuler.isSelected()) {
-            ArrayList<Double> yEuler = EulerMethod.calculateValues(x0, X, y0, h);
-            Series euler = makeSolutionSeries(xAxis, yEuler);
-            euler.setName("Euler");
-            Graph.getData().addAll(euler);
-            Series error = calculateError(yExact, yEuler, xAxis);
-            error.setName("Euler");
-            ErrorGraph.getData().addAll(error);
+            printApproximateGraph("Euler", xAxis, yExact);
         }
         if (isImprovedEuler.isSelected()) {
-            ArrayList<Double> yImproved = ImprovedEuler.calculateValues(x0, X, y0, h);
-            Series improved = makeSolutionSeries(xAxis, yImproved);
-            improved.setName("Improved Euler");
-            Graph.getData().addAll(improved);
-            Series error = calculateError(yExact, yImproved, xAxis);
-            error.setName("Improved Euler");
-            ErrorGraph.getData().addAll(error);
+            printApproximateGraph("Improved Euler", xAxis, yExact);
         }
         if (isRK.isSelected()) {
-            ArrayList<Double> yRK = RungeKutta.calculateValues(x0, X, y0, h);
-            Series RK = makeSolutionSeries(xAxis, yRK);
-            RK.setName("Runge-Kutta");
-            Graph.getData().addAll(RK);
-            Series error = calculateError(yExact, yRK, xAxis);
-            error.setName("Runge Kutta");
-            ErrorGraph.getData().addAll(error);
-
+            printApproximateGraph("Runge-Kutta", xAxis, yExact);
         }
     }
 
@@ -125,42 +75,98 @@ public class Controller {
     This function handles the "Apply" button at the Truncation tab.
      */
     private void handleErrorButton(ActionEvent event) {
-        double x0 = Double.parseDouble(initial_x.getText());
-        double X = Double.parseDouble(initial_X.getText());
-        double y0 = Double.parseDouble(initial_y.getText());
-        int n0 = Integer.parseInt(error_n.getText());
-        int N = Integer.parseInt(error_N.getText());
-        ArrayList<Integer> xAxis = new ArrayList<>();
-        double c = ExactSolution.calculateConstant(x0, y0);
-        TruncationGraph.getData().clear();
-        for (int i = n0; i <= N; i++) {
+        parseTruncationValues();
+        ArrayList<Object> xAxis = new ArrayList<>();
+        clearTruncationGraph();
+        //create x(N) axis for the graph
+        for (int i = n0; i <= N_truncation; i++) {
             xAxis.add(i);
         }
         if (eulerError.isSelected()) {
-            ArrayList<Double> yAxis = TruncationError.calculateError(n0, N, x0, X, y0, c, "euler");
-            Series euler = makeTruncationSeries(xAxis, yAxis);
-            euler.setName("Euler");
-            TruncationGraph.getData().addAll(euler);
+            printTruncationGraph("Euler", xAxis);
         }
         if (improvedError.isSelected()) {
-            ArrayList<Double> yAxis = TruncationError.calculateError(n0, N, x0, X, y0, c, "improved");
-            Series improved = makeTruncationSeries(xAxis, yAxis);
-            improved.setName("Improved Euler");
-            TruncationGraph.getData().addAll(improved);
+            printTruncationGraph("Improved Euler", xAxis);
         }
 
         if (rungeError.isSelected()) {
-            ArrayList<Double> yAxis = TruncationError.calculateError(n0, N, x0, X, y0, c, "runge");
-            Series runge = makeTruncationSeries(xAxis, yAxis);
-            runge.setName("Runge-Kutta");
-            TruncationGraph.getData().addAll(runge);
+            printTruncationGraph("Runge-Kutta", xAxis);
         }
     }
 
+    private void parseSolutionValues() {
+        // Parsing values of the text boxes
+        x0 = Double.parseDouble(initial_x.getText());
+        X = Double.parseDouble(initial_X.getText());
+        y0 = Double.parseDouble(initial_y.getText());
+        N = Double.parseDouble(initial_N.getText());
+        h = (X - x0)/N; // calculate h
+        constant = ExactSolution.calculateConstant(x0, y0);
+    }
+
+    private void parseTruncationValues() {
+        parseSolutionValues();
+        n0 = Integer.parseInt(error_n.getText());
+        N_truncation = Integer.parseInt(error_N.getText());
+    }
+
+    private void clearSolutionGraphs() {
+        // clear the previous graphs
+        Graph.getData().clear();
+        ErrorGraph.getData().clear();
+    }
+
+    private void clearTruncationGraph() {
+        // clear the previous graphs
+        TruncationGraph.getData().clear();
+    }
+
+    /*
+    Function that prints the exact solution
+     */
+    private void printExactGraph(ArrayList<Object> xAxis, ArrayList<Double> yExact) {
+        Series exact = makeSeries(xAxis, yExact);
+        exact.setName("Exact solution");
+        Graph.getData().addAll(exact);
+    }
+
+    /*
+    Function that prints approximation graph for a given method
+     */
+    private void printApproximateGraph(String method, ArrayList<Object> xAxis, ArrayList<Double> yExact) {
+        ArrayList<Double> yApprox = new ArrayList<>();
+        switch (method) {
+            case "Euler":
+                yApprox = eulerMethod.calculateValues(x0, X, y0, h);
+                break;
+            case "Improved Euler":
+                yApprox = improvedEuler.calculateValues(x0, X, y0, h);
+                break;
+            case "Runge-Kutta":
+                yApprox = rungeKutta.calculateValues(x0, X, y0, h);
+                break;
+        }
+        Series series = makeSeries(xAxis, yApprox);
+        series.setName(method);
+        Graph.getData().addAll(series);
+        Series error = calculateError(yExact, yApprox, xAxis);
+        error.setName(method);
+        ErrorGraph.getData().addAll(error);
+    }
+
+    /*
+    Function that prints Truncation Error graph for a given method
+     */
+    private void printTruncationGraph(String method, ArrayList<Object> xAxis) {
+        ArrayList<Double> yAxis = truncationError.calculateError(n0, N_truncation, x0, X, y0, constant, method);
+        Series truncation = makeSeries(xAxis, yAxis);
+        truncation.setName(method);
+        TruncationGraph.getData().addAll(truncation);
+    }
     /*
     A simple function to create Series for the LineChart
      */
-    private Series makeSolutionSeries(ArrayList<Double> xAxis, ArrayList<Double> yAxis) {
+    private Series makeSeries(ArrayList<Object> xAxis, ArrayList<Double> yAxis) {
         Series rungeKutta = new Series();
         for (int i = 0; i < xAxis.size(); i++) {
             rungeKutta.getData().add(new Data(xAxis.get(i), yAxis.get(i)));
@@ -169,20 +175,9 @@ public class Controller {
     }
 
     /*
-    A simple function to create Series for the LineChart (Truncation Error)
-    */
-    private Series makeTruncationSeries(ArrayList<Integer> xAxis, ArrayList<Double> yAxis) {
-        Series series = new Series();
-        for (int i = 0; i < xAxis.size(); i++) {
-            series.getData().add(new Data(xAxis.get(i), yAxis.get(i)));
-        }
-        return series;
-    }
-
-    /*
     A function to calculate errors with 2 given y-axis lists of values
      */
-    private Series calculateError(ArrayList<Double> yExact, ArrayList<Double> yApprox, ArrayList<Double> xAxis) {
+    private Series calculateError(ArrayList<Double> yExact, ArrayList<Double> yApprox, ArrayList<Object> xAxis) {
         Series error = new Series();
         for (int i = 0; i < xAxis.size(); i++) {
             error.getData().add(new Data(xAxis.get(i), Math.abs(yExact.get(i) - yApprox.get(i))));
